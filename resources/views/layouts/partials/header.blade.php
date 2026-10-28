@@ -60,12 +60,23 @@
     </span>
     <span class="nav-text">Edit Page</span>
 </a>
+        <a class="nav-link" href="{{ route('our-projects.index') }}">
+          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
+          <span class="nav-text">Our Projects</span>
+        </a>
+        <a class="nav-link" href="{{ route('our-products.index') }}">
+          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
+          <span class="nav-text">Our Products</span>
+        </a>
+      </nav>
+      
+
         <a class="nav-link" href="blank.html">
           <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
           <span class="nav-text">Blank Page</span>
         </a>
       </nav>
-
+      
       <div class="sidebar-user">
         <img class="avatar-img avatar-md sidebar-user-avatar" src="{{asset('assets/images/avatar/avatar.jpg')}}" alt="Admin Hasan">
         <strong>Admin Hasan</strong>

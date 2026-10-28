@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PageSettingController;
 
 
+use App\Http\Controllers\OurProjectController;
+use App\Http\Controllers\OurProductController;
+
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -41,5 +48,10 @@ Route::get('/admin/edit-page', [PageSettingController::class, 'edit'])
 Route::post('/admin/edit-page', [PageSettingController::class, 'save'])
     ->name('admin.edit-page.save');
 
+Route::resource('our-projects', OurProjectController::class)
+    ->except(['show']);
+
+    Route::resource('our-products', OurProductController::class)
+    ->except(['show']);
 
 require __DIR__.'/auth.php';
