@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PageSettingController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,5 +29,17 @@ Route::get('/logout', function (Request $request) {
 
     return redirect()->route('login');
 })->name('logout')->middleware('auth');
+
+
+
+
+
+
+Route::get('/admin/edit-page', [PageSettingController::class, 'edit'])
+    ->name('admin.edit-page');
+
+Route::post('/admin/edit-page', [PageSettingController::class, 'save'])
+    ->name('admin.edit-page.save');
+
 
 require __DIR__.'/auth.php';

@@ -53,6 +53,13 @@
           <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="{{ route('admin.edit-page') }}"
+   aria-current="{{ request()->routeIs('admin.edit-page') ? 'page' : 'false' }}">
+    <span class="nav-icon">
+        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+    </span>
+    <span class="nav-text">Edit Page</span>
+</a>
         <a class="nav-link" href="blank.html">
           <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
           <span class="nav-text">Blank Page</span>
