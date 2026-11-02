@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class OurProjectController extends Controller
 {
+    // Display all projects
     public function index()
     {
         $projects = DB::table('our_projects')
@@ -17,11 +18,13 @@ class OurProjectController extends Controller
         return view('ourproject', compact('projects'));
     }
 
+    // Redirect create route to listing page
     public function create()
     {
         return redirect()->route('our-projects.index');
     }
 
+    // Add new project
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -50,9 +53,12 @@ class OurProjectController extends Controller
             ->with('success', 'Project added successfully.');
     }
 
+    // Display edit form
     public function edit($id)
     {
-        $project = DB::table('our_projects')->where('id', $id)->first();
+        $project = DB::table('our_projects')
+            ->where('id', $id)
+            ->first();
 
         if (!$project) {
             return redirect()->route('our-projects.index')
@@ -69,9 +75,12 @@ class OurProjectController extends Controller
         ]);
     }
 
+    // Update project
     public function update(Request $request, $id)
     {
-        $project = DB::table('our_projects')->where('id', $id)->first();
+        $project = DB::table('our_projects')
+            ->where('id', $id)
+            ->first();
 
         if (!$project) {
             return redirect()->route('our-projects.index')
@@ -99,16 +108,21 @@ class OurProjectController extends Controller
                 ->store('projects', 'public');
         }
 
-        DB::table('our_projects')->where('id', $id)->update($data);
+        DB::table('our_projects')
+            ->where('id', $id)
+            ->update($data);
 
         return redirect()
             ->route('our-projects.index')
             ->with('success', 'Project updated successfully.');
     }
 
+    // Delete project
     public function destroy($id)
     {
-        $project = DB::table('our_projects')->where('id', $id)->first();
+        $project = DB::table('our_projects')
+            ->where('id', $id)
+            ->first();
 
         if (!$project) {
             return redirect()->route('our-projects.index')
@@ -119,7 +133,9 @@ class OurProjectController extends Controller
             Storage::disk('public')->delete($project->image);
         }
 
-        DB::table('our_projects')->where('id', $id)->delete();
+        DB::table('our_projects')
+            ->where('id', $id)
+            ->delete();
 
         return redirect()
             ->route('our-projects.index')

@@ -206,6 +206,12 @@
             .project-table tbody td {
                 padding: 13px;
             }
+
+            .page-header {
+                align-items: flex-start !important;
+                gap: 15px;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -215,18 +221,30 @@
 <div class="page-container">
 
     {{-- Page Header --}}
-    <div class="mb-4">
-        <h1 class="page-title">Our Projects</h1>
-        <p class="subtitle mb-0">
-            View and manage your project details.
-        </p>
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="page-title">Our Projects</h1>
+            <p class="subtitle mb-0">
+                View and manage your project details.
+            </p>
+        </div>
+
+        <button type="button"
+                class="btn btn-update"
+                onclick="showAddForm()">
+            + Add Project
+        </button>
+
     </div>
 
     {{-- Success Message --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
             {{ session('success') }}
-            <button type="button" class="btn-close"
+
+            <button type="button"
+                    class="btn-close"
                     data-bs-dismiss="alert"></button>
         </div>
     @endif
@@ -235,7 +253,9 @@
     @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show">
             {{ session('error') }}
-            <button type="button" class="btn-close"
+
+            <button type="button"
+                    class="btn-close"
                     data-bs-dismiss="alert"></button>
         </div>
     @endif
@@ -244,6 +264,7 @@
     @if($errors->any())
         <div class="alert alert-danger">
             <strong>Please correct the following errors:</strong>
+
             <ul class="mb-0 mt-2">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -252,28 +273,37 @@
         </div>
     @endif
 
-    {{-- Edit Project Form Only --}}
+    {{-- Add / Edit Project Form --}}
     <div class="project-card form-section"
          id="projectFormCard"
          style="{{ $errors->any() || isset($editProject) ? '' : 'display:none;' }}">
 
         <div class="mb-4">
-            <h5 class="fw-bold mb-1">Edit Project</h5>
+            <h5 class="fw-bold mb-1" id="formTitle">
+                {{ isset($editProject) ? 'Edit Project' : 'Add Project' }}
+            </h5>
+
             <p class="subtitle mb-0">
-                Update the project information below.
+                Enter the project information below.
             </p>
         </div>
 
         <form id="projectForm"
-              action="{{ isset($editProject) ? route('our-projects.update', $editProject->id) : '#' }}"
+              action="{{ isset($editProject) ? route('our-projects.update', $editProject->id) : route('our-projects.store') }}"
               method="POST"
               enctype="multipart/form-data">
 
             @csrf
-            @method('PUT')
+
+            {{-- Dynamic form method --}}
+            <input type="hidden"
+                   name="_method"
+                   id="formMethod"
+                   value="{{ isset($editProject) ? 'PUT' : 'POST' }}">
 
             <div class="row">
 
+                {{-- Project Name --}}
                 <div class="col-md-6 mb-3">
                     <label for="project_name" class="form-label">
                         Project Name <span class="text-danger">*</span>
@@ -288,10 +318,13 @@
                            required>
 
                     @error('project_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
 
+                {{-- Project Image --}}
                 <div class="col-md-6 mb-3">
                     <label for="project_image" class="form-label">
                         Project Image
@@ -308,7 +341,9 @@
                     </small>
 
                     @error('image')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
 
                     <div id="imagePreview" class="mt-2">
@@ -320,6 +355,7 @@
                     </div>
                 </div>
 
+                {{-- Description --}}
                 <div class="col-12 mb-4">
                     <label for="description" class="form-label">
                         Description
@@ -331,14 +367,17 @@
                               class="form-control @error('description') is-invalid @enderror">{{ old('description', isset($editProject) ? $editProject->description : '') }}</textarea>
 
                     @error('description')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
 
             </div>
 
-            <button type="submit" class="btn btn-update">
-                Update Project
+            {{-- Form Buttons --}}
+            <button type="submit" class="btn btn-update" id="submitButton">
+                {{ isset($editProject) ? 'Update Project' : 'Save Project' }}
             </button>
 
             <button type="button"
@@ -346,6 +385,7 @@
                     onclick="hideForm()">
                 Cancel
             </button>
+
         </form>
     </div>
 
@@ -353,18 +393,24 @@
     <div class="project-card">
 
         <div class="card-heading d-flex justify-content-between align-items-center">
+
             <div>
                 <h5 class="fw-bold mb-1">Project List</h5>
-                <p class="subtitle mb-0">All registered projects</p>
+                <p class="subtitle mb-0">
+                    All registered projects
+                </p>
             </div>
 
             <span class="badge bg-light text-dark border">
                 Total: {{ $projects->count() }}
             </span>
+
         </div>
 
         <div class="table-responsive">
+
             <table class="table project-table table-hover">
+
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -376,42 +422,58 @@
                 </thead>
 
                 <tbody>
-                    @forelse($projects as $project)
-                        <tr>
-                            <td>{{ $project->id }}</td>
 
+                    @forelse($projects as $project)
+
+                        <tr>
+
+                            {{-- ID --}}
+                            <td>
+                                {{ $project->id }}
+                            </td>
+
+                            {{-- Project Name --}}
                             <td>
                                 <span class="project-name">
                                     {{ $project->project_name }}
                                 </span>
                             </td>
 
+                            {{-- Description --}}
                             <td>
                                 <div class="project-description">
                                     {{ $project->description ?: 'No description available' }}
                                 </div>
                             </td>
 
+                            {{-- Image --}}
                             <td>
                                 @if($project->image)
+
                                     <img src="{{ asset('storage/' . $project->image) }}"
                                          class="project-image"
                                          alt="{{ $project->project_name }}">
+
                                 @else
-                                    <div class="no-image">No image</div>
+
+                                    <div class="no-image">
+                                        No image
+                                    </div>
+
                                 @endif
                             </td>
 
+                            {{-- Actions --}}
                             <td>
                                 <div class="action-buttons">
 
-                                    {{-- Edit --}}
+                                    {{-- Edit Button --}}
                                     <a href="{{ route('our-projects.edit', $project->id) }}"
                                        class="btn btn-edit">
                                         Edit
                                     </a>
 
-                                    {{-- Delete --}}
+                                    {{-- Delete Button --}}
                                     <form action="{{ route('our-projects.destroy', $project->id) }}"
                                           method="POST"
                                           onsubmit="return confirm('Are you sure you want to delete this project?')">
@@ -419,30 +481,43 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit" class="btn btn-delete">
+                                        <button type="submit"
+                                                class="btn btn-delete">
                                             Delete
                                         </button>
+
                                     </form>
 
                                 </div>
                             </td>
+
                         </tr>
+
                     @empty
+
                         <tr>
                             <td colspan="5" class="text-center py-5">
+
                                 <h6 class="fw-bold text-secondary">
                                     No projects found
                                 </h6>
+
                                 <p class="text-muted mb-0">
                                     There are currently no project records to display.
                                 </p>
+
                             </td>
                         </tr>
+
                     @endforelse
+
                 </tbody>
+
             </table>
+
         </div>
 
+        {{-- Table Footer --}}
         <div class="table-footer">
             Showing {{ $projects->count() }} project(s)
         </div>
@@ -455,13 +530,46 @@
 
 <script>
     const formCard = document.getElementById('projectFormCard');
+    const projectForm = document.getElementById('projectForm');
 
+    // Open Add Project form
+    function showAddForm() {
+
+        projectForm.reset();
+
+        // Change form action to store route
+        projectForm.action = "{{ route('our-projects.store') }}";
+
+        // Change method to POST
+        document.getElementById('formMethod').value = 'POST';
+
+        // Change form heading
+        document.getElementById('formTitle').textContent = 'Add Project';
+
+        // Change submit button text
+        document.getElementById('submitButton').textContent = 'Save Project';
+
+        // Clear old image preview
+        document.getElementById('imagePreview').innerHTML = '';
+
+        // Show form
+        formCard.style.display = 'block';
+
+        // Scroll to form
+        formCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+
+    // Hide form
     function hideForm() {
         formCard.style.display = 'none';
     }
 
-    // Preview the selected replacement image.
+    // Image Preview
     document.getElementById('project_image').addEventListener('change', function () {
+
         const file = this.files[0];
 
         if (!file) {
@@ -477,7 +585,9 @@
         const reader = new FileReader();
 
         reader.onload = function (event) {
+
             const preview = document.getElementById('imagePreview');
+
             const img = document.createElement('img');
 
             img.src = event.target.result;
