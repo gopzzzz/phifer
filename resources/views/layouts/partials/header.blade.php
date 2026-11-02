@@ -3,17 +3,17 @@
         <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
           <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
           <span class="brand-copy">
-            <span class="brand-title">adminHMD</span>
-            <span class="brand-subtitle">Admin Template</span>
+            <span class="brand-title">admin</span>
+            <!-- <span class="brand-subtitle">Admin Template</span> -->
           </span>
         </a>
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{url('dashboard')}}">
           <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
-        <a class="nav-link active" href="users.html" aria-current="page">
+        <!-- <a class="nav-link active" href="users.html" aria-current="page">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Users</span>
         </a>
@@ -52,7 +52,7 @@
         <a class="nav-link" href="settings.html">
           <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
           <span class="nav-text">Settings</span>
-        </a>
+        </a> -->
         <a class="nav-link" href="{{ route('admin.edit-page') }}"
    aria-current="{{ request()->routeIs('admin.edit-page') ? 'page' : 'false' }}">
     <span class="nav-icon">
@@ -71,13 +71,13 @@
       </nav>
       
 
-        <a class="nav-link" href="blank.html">
+        <!-- <a class="nav-link" href="blank.html">
           <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
           <span class="nav-text">Blank Page</span>
         </a>
-      </nav>
+      </nav> -->
       
-      <div class="sidebar-user">
+      <!-- <div class="sidebar-user">
         <img class="avatar-img avatar-md sidebar-user-avatar" src="{{asset('assets/images/avatar/avatar.jpg')}}" alt="Admin Hasan">
         <strong>Admin Hasan</strong>
         <small>Active Workspace</small>
@@ -86,7 +86,7 @@
       <div class="sidebar-footer">
         <span class="status-dot"></span>
         <span class="sidebar-footer-text">System running smoothly</span>
-      </div>
+      </div> -->
     </aside>
 
         <div class="admin-main">

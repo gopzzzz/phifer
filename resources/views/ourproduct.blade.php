@@ -1,166 +1,256 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.mainlayout')
 
-    <title>Our Products</title>
+@section('content')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+<style>
+.page-container {
+    background: #f5f7fb;
+    min-height: 100vh;
+    padding: 30px;
+}
 
-    <style>
-        body {
-            background: #f5f7fb;
-            font-family: Arial, sans-serif;
-            color: #263247;
-        }
+.page-header {
+    margin-bottom: 25px;
+}
 
-        .page-container {
-            padding: 30px;
-        }
+.page-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
 
-        .page-header {
-            background: #fff;
-            padding: 24px 28px;
-            border: 1px solid #e6ebf2;
-            border-radius: 12px;
-            margin-bottom: 24px;
-        }
+.page-header p {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 0;
+}
 
-        .page-header h2 {
-            font-size: 25px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
+.table-container {
+    background: #fff;
+    border: 1px solid #e8edf4;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 3px 15px rgba(15,23,42,.035);
+}
 
-        .page-header p {
-            color: #788397;
-            font-size: 14px;
-            margin-bottom: 0;
-        }
+.table-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf0f5;
+}
 
-        .table-container {
-            background: #fff;
-            border: 1px solid #e6ebf2;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+.table-heading h5 {
+    color: #1e293b;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
 
-        .table {
-            margin-bottom: 0;
-        }
+.table-heading p {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 0;
+}
 
-        .table thead th {
-            background: #f1f4f9;
-            color: #39465b;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 16px;
-            white-space: nowrap;
-            border-bottom: 1px solid #e2e8f0;
-        }
+.product-count {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
 
-        .table tbody td {
-            padding: 16px;
-            font-size: 14px;
-            color: #4b5668;
-            vertical-align: middle;
-            border-color: #edf0f5;
-        }
+.product-table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
 
-        .product-image {
-            width: 85px;
-            height: 70px;
-            object-fit: contain;
-            border: 1px solid #edf0f5;
-            border-radius: 8px;
-            padding: 4px;
-            background: #fff;
-        }
+.product-table thead th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 15px 13px;
+    border-bottom: 1px solid #e8edf4;
+    white-space: nowrap;
+}
 
-        .product-name {
-            font-weight: 600;
-            color: #263247;
-        }
+.product-table tbody td {
+    padding: 17px 13px;
+    color: #475569;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+}
 
-        .product-features {
-            white-space: pre-line;
-            min-width: 150px;
-        }
+.product-table tbody tr:hover {
+    background: #fafbff;
+}
 
-        .empty-message {
-            padding: 35px !important;
-            text-align: center;
-            color: #788397 !important;
-        }
+.product-name {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 14px;
+}
 
-        @media (max-width: 768px) {
-            .page-container {
-                padding: 15px;
-            }
+.product-image {
+    width: 75px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 9px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 2px;
+}
 
-            .page-header {
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
+.no-image {
+    width: 75px;
+    height: 65px;
+    border-radius: 9px;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 11px;
+}
 
-<body>
-    <div class="container-fluid page-container">
+.product-description {
+    max-width: 300px;
+    line-height: 1.6;
+    color: #64748b;
+}
 
-        <!-- Page Heading -->
-        <div class="page-header">
-            <h2>Our Products</h2>
-            <p>View our products and their details.</p>
+.product-features {
+    max-width: 280px;
+    line-height: 1.7;
+    color: #475569;
+    white-space: pre-line;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 60px 20px !important;
+    color: #64748b !important;
+}
+
+.empty-message i {
+    display: block;
+    font-size: 40px;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+}
+
+.table-footer {
+    border-top: 1px solid #edf0f5;
+    padding-top: 16px;
+    margin-top: 5px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+@media(max-width: 767px) {
+    .page-container {
+        padding: 15px;
+    }
+
+    .table-container {
+        padding: 15px;
+    }
+
+    .product-table {
+        min-width: 850px;
+    }
+
+    .page-header h2 {
+        font-size: 22px;
+    }
+}
+</style>
+
+<div class="container-fluid page-container">
+
+    <!-- Page Heading -->
+    <div class="page-header">
+        <h2>Our Products</h2>
+        <p>Explore and manage your product information and details.</p>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-container">
+
+        <div class="table-heading">
+            <div>
+                <h5>Product List</h5>
+                <p>All available products and their details.</p>
+            </div>
+
+            <span class="product-count">
+                <i class="bi bi-box-seam me-1"></i>
+                Total: {{ $products->count() }}
+            </span>
         </div>
 
-        <!-- Products Table -->
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
+        <div class="table-responsive">
 
-                    <thead>
+            <table class="table table-hover product-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @forelse ($products as $product)
+
                         <tr>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Image</th>
-                            <th>Description</th>
-                            <th>Features</th>
-                        </tr>
-                    </thead>
+                            <!-- ID -->
+                            <td>
+                                {{ $product->id }}
+                            </td>
 
-                    <tbody>
-                        @forelse ($products as $product)
-                            <tr>
-                                <!-- ID Column -->
-                                <td>{{ $product->id }}</td>
+                            <!-- Product Name -->
+                            <td>
+                                <span class="product-name">
+                                    {{ $product->product_name }}
+                                </span>
+                            </td>
 
-                                <!-- Product Name Column -->
-                                <td>
-                                    <span class="product-name">
-                                        {{ $product->product_name }}
-                                    </span>
-                                </td>
+                            <!-- Product Image -->
+                            <td>
+                                @if (!empty($product->image))
 
-                                <!-- Image Column -->
-                                <td>
-                                    @if (!empty($product->image))
-                                        <img
-                                            src="{{ asset('storage/' . $product->image) }}"
-                                            alt="{{ $product->product_name }}"
-                                            class="product-image"
-                                            loading="lazy"
-                                        >
-                                    @else
-                                        <span class="text-muted">No image</span>
-                                    @endif
-                                </td>
+                                    <img
+                                        src="{{ asset('storage/' . $product->image) }}"
+                                        alt="{{ $product->product_name }}"
+                                        class="product-image"
+                                        loading="lazy"
+                                    >
 
-                                <!-- Description Column -->
-                                <td>
+                                @else
+
+                                    <div class="no-image">
+                                        No image
+                                    </div>
+
+                                @endif
+                            </td>
+
+                            <!-- Description -->
+                            <td>
+                                <div class="product-description">
                                     @if (!empty($product->description))
                                         {{ $product->description }}
                                     @else
@@ -168,34 +258,52 @@
                                             No description available
                                         </span>
                                     @endif
-                                </td>
+                                </div>
+                            </td>
 
-                                <!-- Features Column -->
-                                <td>
-                                    <div class="product-features">
-                                        @if (!empty($product->features))
-                                            {{ $product->features }}
-                                        @else
-                                            <span class="text-muted">
-                                                No features available
-                                            </span>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="empty-message">
-                                    No products available.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
+                            <!-- Features -->
+                            <td>
+                                <div class="product-features">
+                                    @if (!empty($product->features))
+                                        {{ $product->features }}
+                                    @else
+                                        <span class="text-muted">
+                                            No features available
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
 
-                </table>
-            </div>
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="5" class="empty-message">
+                                <i class="bi bi-box-seam"></i>
+                                <h6 class="fw-bold text-secondary">
+                                    No Products Found
+                                </h6>
+                                <p class="mb-0">
+                                    There are currently no products available.
+                                </p>
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="table-footer">
+            Showing {{ $products->count() }} product(s)
         </div>
 
     </div>
-</body>
-</html>
+
+</div>
+
+@endsection

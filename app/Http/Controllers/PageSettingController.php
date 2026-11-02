@@ -56,4 +56,7 @@ class PageSettingController extends Controller
             ->route('admin.edit-page')
             ->with('success', 'Page details saved successfully.');
     }
+    public function dashboard(){
+        return view('admin.dashboard');
+    }
 }

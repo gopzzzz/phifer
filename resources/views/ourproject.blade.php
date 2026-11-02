@@ -1,228 +1,266 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Our Projects</title>
+@extends('layouts.mainlayout')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+@section('content')
 
-    <style>
-        body {
-            background: #f5f7fb;
-            color: #1e293b;
-            font-family: Arial, sans-serif;
-        }
+<style>
+.page-container {
+    background: #f5f7fb;
+    min-height: 100vh;
+    padding: 30px;
+}
 
-        .page-container {
-            max-width: 1250px;
-            margin: 40px auto;
-            padding: 0 18px;
-        }
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 5px;
+}
 
-        .page-title {
-            font-size: 27px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
+.subtitle {
+    color: #64748b;
+    font-size: 13px;
+}
 
-        .subtitle {
-            font-size: 14px;
-            color: #64748b;
-        }
+.project-card {
+    background: #fff;
+    border: 1px solid #e8edf4;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 3px 15px rgba(15,23,42,.035);
+}
 
-        .project-card {
-            background: #fff;
-            border: 1px solid #e5eaf1;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
-            overflow: hidden;
-        }
+.card-heading {
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #edf0f5;
+}
 
-        .card-heading {
-            padding: 20px 24px;
-            border-bottom: 1px solid #edf0f5;
-        }
+.card-heading h5,
+.form-heading h5 {
+    color: #1e293b;
+    font-size: 17px;
+    font-weight: 700;
+}
 
-        .form-section {
-            padding: 24px;
-            margin-bottom: 25px;
-        }
+.form-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
 
-        .form-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-        }
+.heading-icon {
+    width: 42px;
+    height: 42px;
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
 
-        .form-control {
-            border-color: #dbe2ea;
-            border-radius: 7px;
-            padding: 10px 12px;
-        }
+.form-label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
 
-        .form-control:focus {
-            border-color: #64748b;
-            box-shadow: 0 0 0 3px rgba(100, 116, 139, .12);
-        }
+.form-control {
+    border: 1px solid #dce3ed;
+    border-radius: 8px;
+    padding: 11px 13px;
+    font-size: 13px;
+    box-shadow: none;
+}
 
-        .btn {
-            border-radius: 7px;
-            padding: 9px 15px;
-            font-size: 13px;
-            font-weight: 600;
-        }
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,.10);
+}
 
-        .btn-edit {
-            background: #fff;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .btn-edit:hover {
-            background: #f1f5f9;
-            color: #1e293b;
-        }
+.project-image {
+    width: 75px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
 
-        .btn-update {
-            background: #1e293b;
-            border: 1px solid #1e293b;
-            color: #fff;
-        }
+#imagePreview .project-image {
+    width: 180px;
+    height: 110px;
+    margin-top: 10px;
+}
 
-        .btn-update:hover {
-            background: #334155;
-            color: #fff;
-        }
+.image-upload-box {
+    padding: 18px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+}
 
-        .btn-delete {
-            background: #fff;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-        }
+.project-table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
 
-        .btn-delete:hover {
-            background: #fef2f2;
-            color: #b91c1c;
-        }
+.project-table thead th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 15px 12px;
+    border-bottom: 1px solid #e8edf4;
+    white-space: nowrap;
+}
 
-        .project-table {
-            margin-bottom: 0;
-        }
+.project-table tbody td {
+    padding: 16px 12px;
+    color: #475569;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+}
 
-        .project-table thead th {
-            background: #f8fafc;
-            color: #64748b;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            padding: 16px 20px;
-            white-space: nowrap;
-            border-bottom: 1px solid #e5eaf1;
-        }
+.project-table tbody tr:hover {
+    background: #fafbff;
+}
 
-        .project-table tbody td {
-            padding: 16px 20px;
-            vertical-align: middle;
-            border-bottom: 1px solid #edf0f5;
-            font-size: 13px;
-        }
+.project-name {
+    color: #1e293b;
+    font-weight: 600;
+}
 
-        .project-table tbody tr:last-child td {
-            border-bottom: none;
-        }
+.project-description {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        .project-table tbody tr:hover {
-            background: #fafbfe;
-        }
+.no-image {
+    width: 75px;
+    height: 60px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 11px;
+}
 
-        .project-name {
-            font-weight: 600;
-            color: #1e293b;
-        }
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
 
-        .project-description {
-            max-width: 300px;
-            color: #64748b;
-            line-height: 1.6;
-            overflow-wrap: anywhere;
-        }
+.action-buttons form {
+    margin: 0;
+}
 
-        .project-image {
-            width: 78px;
-            height: 58px;
-            object-fit: cover;
-            border-radius: 7px;
-            border: 1px solid #e2e8f0;
-        }
+.btn-edit,
+.btn-delete,
+.btn-update {
+    border: none;
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 7px;
+}
 
-        .no-image {
-            width: 78px;
-            height: 58px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 7px;
-            background: #f1f5f9;
-            color: #94a3b8;
-            font-size: 11px;
-        }
+.btn-edit {
+    background: #eef2ff;
+    color: #4f46e5;
+}
 
-        .action-buttons {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.btn-edit:hover {
+    background: #e0e7ff;
+    color: #4338ca;
+}
 
-        .action-buttons form {
-            margin: 0;
-        }
+.btn-delete {
+    background: #fff1f2;
+    color: #e11d48;
+}
 
-        .table-footer {
-            padding: 15px 20px;
-            color: #64748b;
-            font-size: 12px;
-            border-top: 1px solid #edf0f5;
-        }
+.btn-delete:hover {
+    background: #ffe4e6;
+    color: #be123c;
+}
 
-        @media (max-width: 768px) {
-            .page-container {
-                margin: 22px auto;
-                padding: 0 12px;
-            }
+.btn-update {
+    background: #4f46e5;
+    color: white;
+    padding: 11px 25px;
+}
 
-            .page-title {
-                font-size: 23px;
-            }
+.btn-update:hover {
+    background: #4338ca;
+    color: white;
+}
 
-            .card-heading,
-            .form-section {
-                padding: 17px;
-            }
+.project-count {
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 20px;
+    padding: 7px 13px;
+    font-size: 12px;
+    font-weight: 700;
+}
 
-            .project-table thead th,
-            .project-table tbody td {
-                padding: 13px;
-            }
-        }
-    </style>
-</head>
+.table-footer {
+    padding-top: 15px;
+    color: #94a3b8;
+    font-size: 12px;
+}
 
-<body>
+.form-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
 
-<div class="page-container">
+@media(max-width: 767px) {
+    .page-container {
+        padding: 15px;
+    }
 
-    {{-- Page Header --}}
+    .project-card {
+        padding: 16px;
+    }
+
+    .project-table {
+        min-width: 750px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+}
+</style>
+
+<div class="container-fluid page-container">
+
+    <!-- Header -->
     <div class="mb-4">
         <h1 class="page-title">Our Projects</h1>
         <p class="subtitle mb-0">
-            View and manage your project details.
+            Manage and showcase your website projects.
         </p>
     </div>
 
-    {{-- Success Message --}}
+    <!-- Success Message -->
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
             {{ session('success') }}
@@ -231,7 +269,7 @@
         </div>
     @endif
 
-    {{-- Error Message --}}
+    <!-- Error Message -->
     @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show">
             {{ session('error') }}
@@ -240,7 +278,6 @@
         </div>
     @endif
 
-    {{-- Validation Errors --}}
     @if($errors->any())
         <div class="alert alert-danger">
             <strong>Please correct the following errors:</strong>
@@ -252,16 +289,21 @@
         </div>
     @endif
 
-    {{-- Edit Project Form Only --}}
+    <!-- Project Form -->
     <div class="project-card form-section"
          id="projectFormCard"
          style="{{ $errors->any() || isset($editProject) ? '' : 'display:none;' }}">
 
-        <div class="mb-4">
-            <h5 class="fw-bold mb-1">Edit Project</h5>
-            <p class="subtitle mb-0">
-                Update the project information below.
-            </p>
+        <div class="form-heading">
+            <div class="heading-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+            <div>
+                <h5 class="mb-1">Edit Project</h5>
+                <p class="subtitle mb-0">
+                    Update your project information.
+                </p>
+            </div>
         </div>
 
         <form id="projectForm"
@@ -275,16 +317,16 @@
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <label for="project_name" class="form-label">
+                    <label class="form-label">
                         Project Name <span class="text-danger">*</span>
                     </label>
 
                     <input type="text"
                            name="project_name"
-                           id="project_name"
                            class="form-control @error('project_name') is-invalid @enderror"
                            value="{{ old('project_name', isset($editProject) ? $editProject->project_name : '') }}"
                            maxlength="255"
+                           placeholder="Enter project name"
                            required>
 
                     @error('project_name')
@@ -293,42 +335,40 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label for="project_image" class="form-label">
-                        Project Image
-                    </label>
+                    <label class="form-label">Project Image</label>
 
-                    <input type="file"
-                           name="image"
-                           id="project_image"
-                           class="form-control @error('image') is-invalid @enderror"
-                           accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                    <div class="image-upload-box">
+                        <input type="file"
+                               name="image"
+                               id="project_image"
+                               class="form-control @error('image') is-invalid @enderror"
+                               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 
-                    <small class="text-muted">
-                        JPG, PNG or WEBP. Maximum 2 MB.
-                    </small>
+                        <small class="text-muted d-block mt-2">
+                            JPG, PNG or WEBP. Maximum 2 MB.
+                        </small>
 
-                    @error('image')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                        @error('image')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
 
-                    <div id="imagePreview" class="mt-2">
-                        @if(isset($editProject) && $editProject->image)
-                            <img src="{{ asset('storage/' . $editProject->image) }}"
-                                 class="project-image"
-                                 alt="Current project image">
-                        @endif
+                        <div id="imagePreview">
+                            @if(isset($editProject) && $editProject->image)
+                                <img src="{{ asset('storage/' . $editProject->image) }}"
+                                     class="project-image"
+                                     alt="Current project image">
+                            @endif
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-12 mb-4">
-                    <label for="description" class="form-label">
-                        Description
-                    </label>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Project Description</label>
 
                     <textarea name="description"
-                              id="description"
                               rows="4"
-                              class="form-control @error('description') is-invalid @enderror">{{ old('description', isset($editProject) ? $editProject->description : '') }}</textarea>
+                              class="form-control @error('description') is-invalid @enderror"
+                              placeholder="Enter project description...">{{ old('description', isset($editProject) ? $editProject->description : '') }}</textarea>
 
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -337,34 +377,42 @@
 
             </div>
 
-            <button type="submit" class="btn btn-update">
-                Update Project
-            </button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-update">
+                    <i class="bi bi-check-circle me-1"></i>
+                    Update Project
+                </button>
 
-            <button type="button"
-                    class="btn btn-edit ms-2"
-                    onclick="hideForm()">
-                Cancel
-            </button>
+                <button type="button"
+                        class="btn btn-edit"
+                        onclick="hideForm()">
+                    Cancel
+                </button>
+            </div>
+
         </form>
     </div>
 
-    {{-- Project List --}}
+    <!-- Project List -->
     <div class="project-card">
 
         <div class="card-heading d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="fw-bold mb-1">Project List</h5>
-                <p class="subtitle mb-0">All registered projects</p>
+                <h5 class="mb-1">Project List</h5>
+                <p class="subtitle mb-0">
+                    View and manage all registered projects.
+                </p>
             </div>
 
-            <span class="badge bg-light text-dark border">
+            <span class="project-count">
+                <i class="bi bi-folder2-open me-1"></i>
                 Total: {{ $projects->count() }}
             </span>
         </div>
 
         <div class="table-responsive">
             <table class="table project-table table-hover">
+
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -387,7 +435,8 @@
                             </td>
 
                             <td>
-                                <div class="project-description">
+                                <div class="project-description"
+                                     title="{{ $project->description }}">
                                     {{ $project->description ?: 'No description available' }}
                                 </div>
                             </td>
@@ -405,13 +454,12 @@
                             <td>
                                 <div class="action-buttons">
 
-                                    {{-- Edit --}}
                                     <a href="{{ route('our-projects.edit', $project->id) }}"
                                        class="btn btn-edit">
+                                        <i class="bi bi-pencil me-1"></i>
                                         Edit
                                     </a>
 
-                                    {{-- Delete --}}
                                     <form action="{{ route('our-projects.destroy', $project->id) }}"
                                           method="POST"
                                           onsubmit="return confirm('Are you sure you want to delete this project?')">
@@ -420,6 +468,7 @@
                                         @method('DELETE')
 
                                         <button type="submit" class="btn btn-delete">
+                                            <i class="bi bi-trash me-1"></i>
                                             Delete
                                         </button>
                                     </form>
@@ -427,19 +476,22 @@
                                 </div>
                             </td>
                         </tr>
+
                     @empty
                         <tr>
                             <td colspan="5" class="text-center py-5">
-                                <h6 class="fw-bold text-secondary">
+                                <i class="bi bi-folder-x fs-1 text-secondary"></i>
+                                <h6 class="fw-bold text-secondary mt-3">
                                     No projects found
                                 </h6>
                                 <p class="text-muted mb-0">
-                                    There are currently no project records to display.
+                                    There are currently no project records.
                                 </p>
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
+
             </table>
         </div>
 
@@ -451,8 +503,6 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
     const formCard = document.getElementById('projectFormCard');
 
@@ -460,16 +510,23 @@
         formCard.style.display = 'none';
     }
 
-    // Preview the selected replacement image.
+    // Image preview
     document.getElementById('project_image').addEventListener('change', function () {
+
         const file = this.files[0];
 
-        if (!file) {
+        if (!file) return;
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert('Please select a JPG, PNG or WEBP image.');
+            this.value = '';
             return;
         }
 
-        if (!file.type.startsWith('image/')) {
-            alert('Please select a valid image file.');
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Image size must not exceed 2 MB.');
             this.value = '';
             return;
         }
@@ -491,5 +548,4 @@
     });
 </script>
 
-</body>
-</html>
+@endsection

@@ -40,7 +40,8 @@ Route::get('/logout', function (Request $request) {
 
 
 
-
+Route::get('dashboard', [PageSettingController::class, 'dashboard'])
+    ->name('dashboard');
 
 Route::get('/admin/edit-page', [PageSettingController::class, 'edit'])
     ->name('admin.edit-page');
